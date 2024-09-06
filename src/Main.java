@@ -1,15 +1,46 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    public static MenuBar mbarra;
     public static int[][] matriz = null;
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        InicializaMenus();
+        int opcion;
+        do {
+            mostrarMenu();
+            opcion = scanner.nextInt();
+            ejecutarOpcion(opcion);
+        } while (opcion != 4);
+    }
+
+    public static void mostrarMenu() {
+        System.out.println(" Menu de Operaciones de Matriz");
+        System.out.println("1. Crear matriz");
+        System.out.println("2. Validar matriz");
+        System.out.println("3. Mostrar fila solicitada por el usuario");
+        System.out.println("4. Salir");
+        System.out.print("Elija una opción: ");
+    }
+
+    public static void ejecutarOpcion(int opcion) {
+        switch (opcion) {
+            case 1:
+                crearMatrizAccion();
+                break;
+            case 2:
+                validarMatriz();
+                break;
+            case 3:
+                mostrarFilaAccion();
+                break;
+            case 4:
+                System.out.println("Saliendo...");
+                break;
+            default:
+                System.out.println("Opción no válida.");
+                break;
+        }
     }
 
     public static boolean validarDatos(int m, int n) {
@@ -20,9 +51,19 @@ public class Main {
         return new int[m][n];
     }
 
+    public static void llenarMatrizConRandom() {
+        Random random = new Random();
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                matriz[i][j] = random.nextInt(10); // Números entre 0 y 9
+            }
+        }
+        System.out.println("Matriz llenada con números aleatorios entre 0 y 9.");
+    }
+
     public static void mostrarFila(int fila) {
         if (matriz == null) {
-            System.out.println("La matriz no se a creado correctamente.");
+            System.out.println("La matriz no se ha creado correctamente.");
         } else if (fila < 0 || fila >= matriz.length) {
             System.out.println("Fila no válida.");
         } else {
@@ -34,27 +75,3 @@ public class Main {
         }
     }
 
-    public static void InicializaMenus() {
-        Frame frame = new Frame("Menu de Operaciones de Matriz");
-        mbarra = new MenuBar();
-        Menu m = new Menu("Archivo");
-
-        // Menu items
-        MenuItem crearMatrizItem = new MenuItem("Crear matriz");
-        MenuItem validarMatrizItem = new MenuItem("Validar matriz");
-        MenuItem mostrarFilaItem = new MenuItem("Mostrar fila solicitada por el usuario");
-        MenuItem salirItem = new MenuItem("Salir");
-
-        m.add(crearMatrizItem);
-        m.add(validarMatrizItem);
-        m.add(mostrarFilaItem);
-        m.addSeparator();
-        m.add(salirItem);
-        mbarra.add(m);
-        frame.setMenuBar(mbarra);
-
-        crearMatrizItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                crearMatrizAccion();
-            }
-        }
